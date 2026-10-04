@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>WH Game: pratique inglês</title>
+<style>
+:root{--bg:#EEF3FA;--card:#fff;--ink:#12213F;--mut:#5B6785;--line:#D5DEEE;--pri:#2747E0;--on:#fff;--ok:#12805C;--okbg:#DDF5EA;--bad:#C2343A;--badbg:#FCE3E4;--sun:#FFC93C;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0E1630;--card:#18244A;--ink:#EAF0FF;--mut:#A3B0D4;--line:#2D3C6C;--pri:#7C93FF;--on:#0E1630;--ok:#5EE0AB;--okbg:#12382C;--bad:#FF8A90;--badbg:#472026}}
+:root[data-theme="dark"]{--bg:#0E1630;--card:#18244A;--ink:#EAF0FF;--mut:#A3B0D4;--line:#2D3C6C;--pri:#7C93FF;--on:#0E1630;--ok:#5EE0AB;--okbg:#12382C;--bad:#FF8A90;--badbg:#472026}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Avenir Next","Nunito","Segoe UI",system-ui,sans-serif}
+main{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:clamp(46px,14vw,84px);line-height:.95;margin:8px 0 6px;font-weight:900;letter-spacing:-.03em}
+h1 span{background:var(--sun);color:#12213F;padding:0 .12em;border-radius:.14em}
+h2{font-size:20px;margin:28px 0 10px}
+p{margin:0 0 12px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.modes{display:grid;gap:10px;margin:18px 0}
+.mode{text-align:left;background:var(--pri);color:var(--on);border:0;border-radius:14px;padding:14px 16px;font-weight:700}
+.mode small{display:block;font-weight:400;opacity:.9}
+.mode.alt{background:var(--card);color:var(--ink);border:2px solid var(--pri)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td{padding:7px 6px;border-top:1px solid var(--line);vertical-align:top}
+td:first-child{font-weight:800;white-space:nowrap;color:var(--pri)}
+.wrap{overflow-x:auto}
+.bar{display:flex;justify-content:space-between;font-weight:700;margin-bottom:8px}
+.prog{height:8px;background:var(--line);border-radius:8px;overflow:hidden;margin-bottom:16px}
+.prog i{display:block;height:100%;background:var(--pri);transition:width .3s}
+.q{font-size:clamp(22px,6vw,28px);font-weight:800;line-height:1.25;margin:4px 0 4px}
+.sub{color:var(--mut);margin-bottom:14px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:12px;padding:13px 14px;font-weight:600}
+.opt:hover:not(:disabled){border-color:var(--pri)}
+.opt.ok{background:var(--okbg);border-color:var(--ok);color:var(--ok)}
+.opt.bad{background:var(--badbg);border-color:var(--bad);color:var(--bad)}
+.fb{margin-top:14px;padding:12px 14px;border-radius:12px;font-weight:600}
+.fb.ok{background:var(--okbg);color:var(--ok)}.fb.bad{background:var(--badbg);color:var(--bad)}
+.next{margin-top:14px;width:100%;background:var(--pri);color:var(--on);border:0;border-radius:12px;padding:13px;font-weight:800}
+.big{font-size:64px;font-weight:900;line-height:1}
+.rev{padding:10px 0;border-top:1px solid var(--line)}
+.rev b{display:block}
+.hide{display:none}
+</style>
+</head>
+<body>
+<main>
+<section id="home">
+  <h1><span>WH</span> Game</h1>
+  <p>Treine as perguntas em inglês (what, where, when, who, why, which, whose e how) traduzindo e completando frases.</p>
+  <div class="modes">
+    <button class="mode" data-mode="tr">Traduzir<small>Veja a frase em inglês e escolha a tradução em português.</small></button>
+    <button class="mode alt" data-mode="wh">Completar<small>Veja a frase em português e escolha a palavra WH que falta.</small></button>
+  </div>
+  <p id="best"></p>
+  <h2>Cola rápida</h2>
+  <div class="card wrap"><table id="cheat"></table></div>
+</section>
+
+<section id="game" class="hide">
+  <div class="bar"><span id="qn"></span><span id="sc"></span></div>
+  <div class="prog"><i id="pg"></i></div>
+  <div class="card">
+    <div class="q" id="prompt"></div>
+    <div class="sub" id="sub"></div>
+    <div class="opts" id="opts"></div>
+    <div id="fb" class="fb hide" role="status"></div>
+    <button class="next hide" id="next">Próxima</button>
+  </div>
+</section>
+
+<section id="end" class="hide">
+  <div class="card">
+    <div class="big" id="final"></div>
+    <p id="msg"></p>
+    <div id="review"></div>
+    <button class="next" id="again">Jogar de novo</button>
+    <button class="next" id="menu" style="background:var(--card);color:var(--ink);border:2px solid var(--line)">Voltar ao início</button>
+  </div>
+</section>
+</main>
+<script>
+var D=[
+["What is your name?","Qual é o seu nome?","What"],
+["Where do you live?","Onde você mora?","Where"],
+["When is your birthday?","Quando é o seu aniversário?","When"],
+["Who is your teacher?","Quem é o seu professor?","Who"],
+["Why are you late?","Por que você está atrasado?","Why"],
+["Which color do you like?","De qual cor você gosta?","Which"],
+["Whose book is this?","De quem é este livro?","Whose"],
+["How are you?","Como você está?","How"],
+["How old are you?","Quantos anos você tem?","How old"],
+["How many students are in the class?","Quantos alunos há na sala?","How many"],
+["How much is this phone?","Quanto custa este celular?","How much"],
+["What time is it?","Que horas são?","What time"],
+["Where is the bathroom?","Onde fica o banheiro?","Where"],
+["Who is she?","Quem é ela?","Who"],
+["When does the class start?","Quando a aula começa?","When"],
+["Why do you study English?","Por que você estuda inglês?","Why"],
+["How often do you study?","Com que frequência você estuda?","How often"],
+["What do you want to eat?","O que você quer comer?","What"],
+["Which one is your bag?","Qual é a sua mochila?","Which"],
+["Whose phone is ringing?","De quem é o celular que está tocando?","Whose"],
+["How far is the school?","A que distância fica a escola?","How far"],
+["Where are you from?","De onde você é?","Where"]
+];
+var CH=[["What","o que / qual"],["What time","que horas"],["Where","onde"],["When","quando"],["Who","quem"],["Why","por que"],["Which","qual (entre opções)"],["Whose","de quem"],["How","como"],["How old","que idade / quantos anos"],["How many","quantos (contáveis)"],["How much","quanto / quanto custa"],["How often","com que frequência"],["How far","a que distância"]];
+var $=function(i){return document.getElementById(i)};
+var S={mode:"",qs:[],i:0,score:0,wrong:[],done:false};
+function sh(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function bestGet(m){try{return +localStorage.getItem("wh-best-"+m)||0}catch(e){return 0}}
+function bestSet(m,v){try{localStorage.setItem("wh-best-"+m,v)}catch(e){}}
+function show(id){["home","game","end"].forEach(function(x){$(x).classList.toggle("hide",x!==id)})}
+function home(){
+  var a=bestGet("tr"),b=bestGet("wh");
+  $("best").textContent=(a||b)?"Seus recordes: Traduzir "+a+"/10 e Completar "+b+"/10.":"Cada rodada tem 10 perguntas.";
+  show("home");
+}
+$("cheat").innerHTML=CH.map(function(r){return "<tr><td>"+r[0]+"</td><td>"+r[1]+"</td></tr>"}).join("");
+function build(it){
+  if(S.mode==="tr"){
+    var d=sh(D.filter(function(x){return x[1]!==it[1]})).slice(0,3).map(function(x){return x[1]});
+    return {p:it[0],s:"Escolha a tradução correta.",o:sh(d.concat(it[1])),a:it[1],it:it};
+  }
+  var w=sh(CH.map(function(c){return c[0]}).filter(function(x){return x!==it[2]})).slice(0,3);
+  return {p:it[0].replace(it[2],"_____"),s:it[1],o:sh(w.concat(it[2])),a:it[2],it:it};
+}
+function start(m){
+  S.mode=m;S.i=0;S.score=0;S.wrong=[];
+  S.qs=sh(D).slice(0,10).map(build);
+  show("game");ask();
+}
+function ask(){
+  var q=S.qs[S.i];S.done=false;
+  $("qn").textContent="Pergunta "+(S.i+1)+" de 10";
+  $("sc").textContent="Acertos: "+S.score;
+  $("pg").style.width=(S.i*10)+"%";
+  $("prompt").textContent=q.p;$("sub").textContent=q.s;
+  $("opts").innerHTML=q.o.map(function(o,k){return '<button class="opt" data-k="'+k+'">'+o+'</button>'}).join("");
+  $("fb").className="fb hide";$("next").className="next hide";
+  $("next").textContent=S.i===9?"Ver resultado":"Próxima";
+}
+$("opts").addEventListener("click",function(e){
+  var b=e.target.closest(".opt");if(!b||S.done)return;
+  S.done=true;
+  var q=S.qs[S.i],pick=q.o[+b.dataset.k],right=pick===q.a;
+  [].forEach.call($("opts").children,function(x){x.disabled=true;if(x.textContent===q.a)x.classList.add("ok")});
+  if(right){S.score++;$("fb").textContent="Correto! "+q.it[0]+" = "+q.it[1]}
+  else{b.classList.add("bad");S.wrong.push(q.it);$("fb").textContent="Quase. A resposta é "+q.a+". "+q.it[0]+" = "+q.it[1]}
+  $("fb").className="fb "+(right?"ok":"bad");
+  $("sc").textContent="Acertos: "+S.score;
+  $("next").className="next";$("next").focus();
+});
+$("next").addEventListener("click",function(){S.i++;S.i>9?finish():ask()});
+function finish(){
+  $("pg").style.width="100%";
+  var old=bestGet(S.mode);if(S.score>old)bestSet(S.mode,S.score);
+  $("final").textContent=S.score+"/10";
+  $("msg").textContent=S.score>=9?"Excelente! Você domina as perguntas WH.":S.score>=6?"Bom trabalho! Revise as frases abaixo e tente de novo.":"Continue praticando. Use a cola rápida na tela inicial.";
+  $("review").innerHTML=S.wrong.length?"<h2>Para revisar</h2>"+S.wrong.map(function(w){return '<div class="rev"><b>'+w[0]+'</b>'+w[1]+'</div>'}).join(""):"<p>Você acertou tudo!</p>";
+  show("end");
+}
+$("again").onclick=function(){start(S.mode)};
+$("menu").onclick=home;
+[].forEach.call(document.querySelectorAll(".mode"),function(b){b.onclick=function(){start(b.dataset.mode)}});
+home();
+</script>
+</body>
+</html>
