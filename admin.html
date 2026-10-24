@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel Administrativo — Ghost Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+  <header class="navbar">
+    <div class="brand">
+      <span class="logo-dot"></span>
+      <span class="logo-text">Ghost Admin</span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">← Voltar ao Início</a>
+      <a href="admin.html" class="active">Dashboard</a>
+      <button class="btn-secondary" onclick="alert('Notificações limpas')">Notificações</button>
+    </nav>
+  </header>
+
+  <main class="admin-main">
+    <div class="admin-header">
+      <div>
+        <h1 class="admin-title">Painel de Controle</h1>
+        <p class="admin-subtitle">Métricas em tempo real do seu projeto Ghost Director.</p>
+      </div>
+      <button class="btn-primary" onclick="alert('Relatório exportado com sucesso!')">Exportar Dados</button>
+    </div>
+
+    <!-- Grade de Métricas -->
+    <div class="metrics-grid">
+      <div class="metric-card">
+        <span class="metric-label">Usuários Ativos</span>
+        <span class="metric-value">12.480</span>
+        <span class="metric-badge green">+18% este mês</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Receita Estimada</span>
+        <span class="metric-value">R$ 48.920</span>
+        <span class="metric-badge green">+24.5%</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Taxa de Conversão</span>
+        <span class="metric-value">4.82%</span>
+        <span class="metric-badge blue">Estável</span>
+      </div>
+      <div class="metric-card">
+        <span class="metric-label">Status da Sincronização</span>
+        <span class="metric-value">Ativo</span>
+        <span class="metric-badge green">GitHub OK</span>
+      </div>
+    </div>
+
+    <!-- Tabela Administrativa Limpa -->
+    <div class="admin-table-container">
+      <h3 style="margin-bottom: 12px; font-weight: 700;">Últimas Atividades do Projeto</h3>
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Arquivo / Ação</th>
+            <th>Autor</th>
+            <th>Data</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>index.html</strong> — Atualização de estilos</td>
+            <td>Ghost AI</td>
+            <td>Hoje, 14:30</td>
+            <td><span class="status-pill ok">Sincronizado</span></td>
+          </tr>
+          <tr>
+            <td><strong>admin.html</strong> — Nova rota administrativa</td>
+            <td>Antigravity</td>
+            <td>Hoje, 14:15</td>
+            <td><span class="status-pill ok">Ativo</span></td>
+          </tr>
+          <tr>
+            <td><strong>style.css</strong> — Paleta branca moderna</td>
+            <td>Sistema</td>
+            <td>Hoje, 14:00</td>
+            <td><span class="status-pill ok">Publicado</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+</body>
+</html>
